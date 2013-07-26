@@ -67,7 +67,11 @@ def parse_manifest(b2g_root):
   """Parse a manifest XML file and return a 'Document' from it.
   Any <include name="another.xml"/> elements are replaced with the contents
   if the specified file."""
-  manifest = cmd(['repo', 'manifest'], cwd=b2g_root, bufsize=100000)
+  if os.path.exists(os.path.join(b2g_root, 'repo')):
+      repo_cmd = os.path.join(b2g_root, 'repo')
+  else:
+      repo_cmd = 'repo'
+  manifest = cmd([repo_cmd, 'manifest'], cwd=b2g_root, bufsize=100000)
   doc = xml.dom.minidom.parseString(manifest)
   return doc
 
